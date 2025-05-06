@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom theme colors for Tailwind */
+:root {
+  --color-primary: #9146FF;
+  --color-primary-dark: #772CE8;
+  --color-primary-light: #A970FF;
+  --color-background: #0E0E10;
+  --color-background-light: #18181B;
+  --color-background-card: #1F1F23;
+  --color-text: #EFEFF1;
+  --color-text-secondary: #ADADB8;
+}
+
