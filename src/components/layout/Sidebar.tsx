@@ -50,8 +50,8 @@ const Sidebar = () => {
       
       <ul className="py-2">
         {channels.map(channel => (
-          <li key={channel.id} className="px-3 py-2 hover:bg-background-card cursor-pointer">
-            <div className="flex items-center gap-3">
+          <li key={channel.id} className="px-2 py-1 hover:bg-background-card cursor-pointer">
+            <div className="flex items-center gap-1">
               <div className="relative">
                 <img 
                   src={channel.avatar} 
@@ -64,7 +64,7 @@ const Sidebar = () => {
               </div>
               
               {!isCollapsed && (
-                <div className="flex-1 min-w-0">
+                <div className="flex-1 ml-2 min-w-0">
                   <div className="flex items-center justify-between">
                     <p className="font-medium truncate">{channel.name}</p>
                     <div className="flex items-center gap-1 text-xs text-text-secondary">
