@@ -37,7 +37,8 @@ const StreamCard: React.FC<StreamCardProps> = ({
   };
 
   return (
-    <Card 
+    <Card
+    role="article"
       className="overflow-hidden transition-transform duration-200 hover:scale-[1.02] cursor-pointer" 
       onClick={handleClick}
     >
@@ -59,11 +60,13 @@ const StreamCard: React.FC<StreamCardProps> = ({
       <CardContent className="p-3">
         <div className="flex gap-3">
           <Avatar.Root className="w-10 h-10 rounded-full overflow-hidden">
-            <Avatar.Image 
-              src={avatarUrl} 
-              alt={username} 
-              className="w-full h-full object-cover"
-            />
+            {avatarUrl ? (
+              <Avatar.Image 
+                src={avatarUrl} 
+                alt={username} 
+                className="w-full h-full object-cover"
+              />
+            ) : null}
             <Avatar.Fallback className="w-full h-full bg-gray-700 flex items-center justify-center text-white">
               {username.charAt(0).toUpperCase()}
             </Avatar.Fallback>
