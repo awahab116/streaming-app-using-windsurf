@@ -1,5 +1,6 @@
-// React is imported by default with JSX in newer React versions
 import { useNavigate } from 'react-router-dom';
+import { Card, CardContent } from '../ui/card';
+import * as Avatar from '@radix-ui/react-avatar';
 
 interface StreamCardProps {
   id: string;
@@ -36,7 +37,10 @@ const StreamCard: React.FC<StreamCardProps> = ({
   };
 
   return (
-    <div className="bg-background-card rounded-md overflow-hidden transition-transform duration-200 hover:scale-[1.02] cursor-pointer" onClick={handleClick}>
+    <Card 
+      className="overflow-hidden transition-transform duration-200 hover:scale-[1.02] cursor-pointer" 
+      onClick={handleClick}
+    >
       <div className="relative">
         <img 
           src={thumbnailUrl} 
@@ -52,13 +56,18 @@ const StreamCard: React.FC<StreamCardProps> = ({
           {formatViewerCount(viewerCount)} viewers
         </div>
       </div>
-      <div className="p-3">
+      <CardContent className="p-3">
         <div className="flex gap-3">
-          <img 
-            src={avatarUrl} 
-            alt={username} 
-            className="w-10 h-10 rounded-full"
-          />
+          <Avatar.Root className="w-10 h-10 rounded-full overflow-hidden">
+            <Avatar.Image 
+              src={avatarUrl} 
+              alt={username} 
+              className="w-full h-full object-cover"
+            />
+            <Avatar.Fallback className="w-full h-full bg-gray-700 flex items-center justify-center text-white">
+              {username.charAt(0).toUpperCase()}
+            </Avatar.Fallback>
+          </Avatar.Root>
           <div className="flex-1 min-w-0">
             <h3 className="font-medium text-sm truncate" title={title}>
               {title}
@@ -67,8 +76,8 @@ const StreamCard: React.FC<StreamCardProps> = ({
             <p className="text-text-secondary text-sm">{category}</p>
           </div>
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 

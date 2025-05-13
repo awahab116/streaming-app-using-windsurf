@@ -1,4 +1,10 @@
 import { useState } from 'react';
+import { ScrollArea } from '../ui/scroll-area';
+import { Button } from '../ui/button';
+import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar';
+import { Badge } from '../../components/ui/badge';
+import { Card } from '../ui/card';
+import { ChevronLeft, ChevronRight, Circle } from 'lucide-react';
 
 interface Channel {
   id: string;
@@ -27,58 +33,63 @@ const Sidebar = () => {
   const [channels] = useState<Channel[]>(MOCK_CHANNELS);
 
   return (
-    <aside className={`bg-background-light h-screen sticky top-0 overflow-y-auto transition-all duration-300 ${isCollapsed ? 'w-16' : 'w-60'}`}>
+    <aside className={`bg-background-light h-screen sticky top-0 transition-all duration-300 ${isCollapsed ? 'w-16' : 'w-60'}`}>
       <div className="p-3 border-b border-background-card">
         <div className="flex items-center justify-between">
           <h2 className={`font-semibold text-lg ${isCollapsed ? 'hidden' : 'block'}`}>LIVE CHANNELS</h2>
-          <button 
+          <Button 
+            variant="ghost" 
+            size="icon" 
             onClick={() => setIsCollapsed(!isCollapsed)}
-            className="text-text-secondary hover:text-text p-1 rounded-md"
+            className="text-text-secondary hover:text-text"
           >
             {isCollapsed ? (
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
-              </svg>
+              <ChevronRight className="h-5 w-5" />
             ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
-              </svg>
+              <ChevronLeft className="h-5 w-5" />
             )}
-          </button>
+          </Button>
         </div>
       </div>
       
-      <ul className="py-2">
-        {channels.map(channel => (
-          <li key={channel.id} className="px-2 py-1 hover:bg-background-card cursor-pointer">
-            <div className="flex items-center gap-1">
-              <div className="relative">
-                <img 
-                  src={channel.avatar} 
-                  alt={channel.name} 
-                  className="w-8 h-8 rounded-full"
-                />
-                {channel.isLive && (
-                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-600 rounded-full border-2 border-background-light"></div>
+      <ScrollArea className="h-[calc(100vh-60px)]">
+        <ul className="py-2">
+          {channels.map(channel => (
+            <Card 
+              key={channel.id} 
+              className="mx-2 my-1 hover:bg-background-card cursor-pointer bg-transparent border-0 shadow-none"
+            >
+              <div className="flex items-center gap-1 p-2">
+                <div className="relative">
+                  <Avatar className="w-8 h-8">
+                    <AvatarImage src={channel.avatar} alt={channel.name} />
+                    <AvatarFallback>{channel.name.charAt(0).toUpperCase()}</AvatarFallback>
+                  </Avatar>
+                  {channel.isLive && (
+                    <Badge 
+                      variant="destructive" 
+                      className="absolute -top-1 -right-1 w-3 h-3 p-0 min-w-0 rounded-full border-2 border-background-light"
+                    />
+                  )}
+                </div>
+                
+                {!isCollapsed && (
+                  <div className="flex-1 ml-2 min-w-0">
+                    <div className="flex items-center justify-between">
+                      <p className="font-medium truncate">{channel.name}</p>
+                      <div className="flex items-center gap-1 text-xs text-text-secondary">
+                        <Circle className="w-2 h-2 fill-red-600 text-red-600" />
+                        <span>{(channel.viewerCount / 1000).toFixed(1)}K</span>
+                      </div>
+                    </div>
+                    <p className="text-text-secondary text-sm truncate">{channel.game}</p>
+                  </div>
                 )}
               </div>
-              
-              {!isCollapsed && (
-                <div className="flex-1 ml-2 min-w-0">
-                  <div className="flex items-center justify-between">
-                    <p className="font-medium truncate">{channel.name}</p>
-                    <div className="flex items-center gap-1 text-xs text-text-secondary">
-                      <div className="w-2 h-2 rounded-full bg-red-600"></div>
-                      <span>{(channel.viewerCount / 1000).toFixed(1)}K</span>
-                    </div>
-                  </div>
-                  <p className="text-text-secondary text-sm truncate">{channel.game}</p>
-                </div>
-              )}
-            </div>
-          </li>
-        ))}
-      </ul>
+            </Card>
+          ))}
+        </ul>
+      </ScrollArea>
     </aside>
   );
 };

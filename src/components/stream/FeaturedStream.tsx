@@ -1,7 +1,10 @@
-// React is imported by default with JSX in newer React versions
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FEATURED_STREAMS } from '../../data/featuredStreams';
+import { Card, CardContent } from '../ui/card';
+import { Tabs, TabsList, TabsTrigger } from '../ui/tabs';
+import * as Avatar from '@radix-ui/react-avatar';
+import { ChevronLeft, ChevronRight, Play } from 'lucide-react';
 
 interface FeaturedStreamProps {
   title: string;
@@ -33,9 +36,9 @@ const FeaturedStream: React.FC<FeaturedStreamProps> = (_props) => {
   };
   
   return (
-    <div className="relative w-full max-w-3xl mx-auto mb-8">
+    <Card className="relative w-full max-w-3xl mx-auto mb-8 border-0 shadow-lg overflow-hidden">
       <div className="relative w-full max-h-[450px]">
-        <div className="relative aspect-video overflow-hidden rounded-lg">
+        <div className="relative aspect-video overflow-hidden rounded-t-lg">
           <img 
             src={currentStream.thumbnailUrl} 
             alt={currentStream.title} 
@@ -46,18 +49,23 @@ const FeaturedStream: React.FC<FeaturedStreamProps> = (_props) => {
           {/* Play button */}
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm cursor-pointer hover:bg-white/30 transition-colors">
-              <div className="w-0 h-0 border-t-[10px] border-t-transparent border-l-[18px] border-l-white border-b-[10px] border-b-transparent ml-1"></div>
+              <Play className="h-8 w-8 text-white ml-1" />
             </div>
           </div>
           
           {/* Stream info */}
-          <div className="absolute bottom-0 left-0 right-0 p-4 flex items-end justify-between">
+          <CardContent className="absolute bottom-0 left-0 right-0 p-4 flex items-end justify-between">
             <div className="flex items-center gap-3">
-              <img 
-                src={currentStream.avatarUrl} 
-                alt={currentStream.streamerName} 
-                className="w-12 h-12 rounded-full border-2 border-primary"
-              />
+              <Avatar.Root className="w-12 h-12 rounded-full border-2 border-primary overflow-hidden">
+                <Avatar.Image 
+                  src={currentStream.avatarUrl} 
+                  alt={currentStream.streamerName} 
+                  className="w-full h-full object-cover"
+                />
+                <Avatar.Fallback className="w-full h-full bg-gray-700 flex items-center justify-center text-white">
+                  {currentStream.streamerName.charAt(0).toUpperCase()}
+                </Avatar.Fallback>
+              </Avatar.Root>
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <span className="bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded">LIVE</span>
@@ -80,7 +88,7 @@ const FeaturedStream: React.FC<FeaturedStreamProps> = (_props) => {
                 Watch
               </button>
             </div>
-          </div>
+          </CardContent>
         </div>
       </div>
       
@@ -90,31 +98,29 @@ const FeaturedStream: React.FC<FeaturedStreamProps> = (_props) => {
           onClick={prevSlide}
           className="w-10 h-10 bg-black/50 rounded-full flex items-center justify-center text-white cursor-pointer mx-2 pointer-events-auto hover:bg-black/70 transition-colors"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="15 18 9 12 15 6"></polyline>
-          </svg>
+          <ChevronLeft className="h-6 w-6" />
         </button>
         <button 
           onClick={nextSlide}
           className="w-10 h-10 bg-black/50 rounded-full flex items-center justify-center text-white cursor-pointer mx-2 pointer-events-auto hover:bg-black/70 transition-colors"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="9 18 15 12 9 6"></polyline>
-          </svg>
+          <ChevronRight className="h-6 w-6" />
         </button>
       </div>
       
-      {/* Slider indicators */}
-      <div className="flex justify-center gap-2 mt-2">
-        {streams.map((_, index) => (
-          <button 
-            key={index} 
-            className={`w-2 h-2 rounded-full ${index === currentSlide ? 'bg-primary' : 'bg-text-secondary'} cursor-pointer`}
-            onClick={() => setCurrentSlide(index)}
-          />
-        ))}
-      </div>
-    </div>
+      {/* Slider indicators using Tabs */}
+      <Tabs value={currentSlide.toString()} onValueChange={(value) => setCurrentSlide(parseInt(value))}>
+        <TabsList className="flex justify-center gap-2 mt-2 border-0 bg-transparent">
+          {streams.map((_, index) => (
+            <TabsTrigger 
+              key={index} 
+              value={index.toString()} 
+              className={`w-2 h-2 rounded-full p-0 ${index === currentSlide ? 'bg-primary' : 'bg-text-secondary'} border-0`}
+            />
+          ))}
+        </TabsList>
+      </Tabs>
+    </Card>
   );
 };
 

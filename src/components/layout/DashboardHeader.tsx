@@ -1,5 +1,7 @@
 import React from 'react';
 import TimeRangeSelector from './TimeRangeSelector';
+import { Card, CardContent } from '../ui/card';
+import { Clock } from 'lucide-react';
 
 interface DashboardHeaderProps {
   title?: string;
@@ -19,12 +21,12 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
         <p className="text-gray-400 mt-1">{subtitle}</p>
       </div>
       <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2 bg-gray-800/60 backdrop-blur-sm px-4 py-2 rounded-lg border border-gray-700">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-purple-400" viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
-          </svg>
-          <span className="text-gray-300">{new Date().toLocaleString()}</span>
-        </div>
+        <Card className="bg-gray-800/60 backdrop-blur-sm border-gray-700">
+          <CardContent className="flex items-center gap-2 px-4 py-2">
+            <Clock className="h-5 w-5 text-purple-400" />
+            <span className="text-gray-300">{new Date().toLocaleString()}</span>
+          </CardContent>
+        </Card>
         <TimeRangeSelector />
       </div>
     </div>

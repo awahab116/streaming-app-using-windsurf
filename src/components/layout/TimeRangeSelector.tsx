@@ -1,25 +1,33 @@
 import React from 'react';
 import { useTimeRange } from '../../contexts/TimeRangeContext';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 const TimeRangeSelector: React.FC = () => {
   const { timeRange, setTimeRange } = useTimeRange();
 
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setTimeRange(e.target.value as any);
+  const handleValueChange = (value: string) => {
+    setTimeRange(value as any);
   };
 
   return (
-    <select 
-      className="bg-gray-800/60 backdrop-blur-sm text-gray-300 border border-gray-700 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-purple-500"
-      value={timeRange}
-      onChange={handleChange}
-    >
-      <option value="7d">Last 7 days</option>
-      <option value="30d">Last 30 days</option>
-      <option value="90d">Last 90 days</option>
-      <option value="ytd">Year to date</option>
-      <option value="custom">Custom range</option>
-    </select>
+    <Select value={timeRange} onValueChange={handleValueChange}>
+      <SelectTrigger className="w-[180px]">
+        <SelectValue placeholder="Select time range" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="7d">Last 7 days</SelectItem>
+        <SelectItem value="30d">Last 30 days</SelectItem>
+        <SelectItem value="90d">Last 90 days</SelectItem>
+        <SelectItem value="ytd">Year to date</SelectItem>
+        <SelectItem value="custom">Custom range</SelectItem>
+      </SelectContent>
+    </Select>
   );
 };
 
